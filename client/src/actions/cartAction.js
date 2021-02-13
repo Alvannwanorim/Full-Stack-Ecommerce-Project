@@ -1,6 +1,7 @@
 import axios from "axios";
 import {
   CART_ADD_ITEM,
+  CART_CLEAR_ITEMS,
   CART_REMOVE_ITEM,
   CART_SAVE_PAYMENT_METHOD,
   CART_SAVE_SHIPPING_ADDRESS,
@@ -29,6 +30,11 @@ export const removeFromCart = (id) => (dispatch, getState) => {
     payload: id,
   });
   localStorage.setItem("cartItems", JSON.stringify(getState().cart.cartItems));
+};
+
+export const clearCartItems = () => (dispatch) => {
+  dispatch({ type: CART_CLEAR_ITEMS });
+  localStorage.removeItem("cartItems");
 };
 
 export const saveShippingAddress = (data) => (dispatch) => {

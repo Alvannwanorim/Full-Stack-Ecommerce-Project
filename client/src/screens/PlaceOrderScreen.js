@@ -43,7 +43,7 @@ const PlaceOrderScreen = ({ history }) => {
       })
     );
   };
-  console.log(cart);
+
   useEffect(() => {
     if (success) {
       history.push(`/order/${order._id}`);
@@ -81,7 +81,7 @@ const PlaceOrderScreen = ({ history }) => {
                       <Row>
                         <Col md={1}>
                           <Image
-                            src={item.image}
+                            src={item.image.url}
                             alt={item.name}
                             fluid
                             rounded

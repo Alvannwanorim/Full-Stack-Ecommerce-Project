@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { LinkContainer } from "react-router-bootstrap";
 import { Table, Button, Row, Col } from "react-bootstrap";
 import { useDispatch, useSelector } from "react-redux";
@@ -8,8 +8,10 @@ import { listProducts, deleteProductAction } from "../actions/productAction";
 import { PRODUCT_CREATE_RESET } from "../constants/constants";
 import Paginate from "../components/Paginate";
 import { Link } from "react-router-dom";
+import axios from "axios";
 
 const ProductListScreen = ({ history, match }) => {
+  const [imageDeleteSuccess, setImageDeleteSuccess] = useState(false);
   const dispatch = useDispatch();
 
   const pageNumber = match.params.pageNumber || 1;
@@ -52,8 +54,18 @@ const ProductListScreen = ({ history, match }) => {
     pageNumber,
   ]);
 
-  const deleteUserHandler = (id) => {
+  const deleteUserHandler = (id, imageId) => {
     if (window.confirm("Are you sure? User will be permanently deleted")) {
+      axios
+        .post(
+          `/api/upload/removeimage`,
+          { imageId },
+          {
+            headers: { "x-auth-token": userInfo.token },
+          }
+        )
+        .then(() => console.log("operation success"))
+        .catch((error) => console.log(error));
       dispatch(deleteProductAction(id));
     }
   };
@@ -108,7 +120,9 @@ const ProductListScreen = ({ history, match }) => {
                     <Button
                       variant="danger"
                       className="btn-sm"
-                      onClick={() => deleteUserHandler(product._id)}
+                      onClick={() =>
+                        deleteUserHandler(product._id, product.image.public_id)
+                      }
                     >
                       <i className="fas fa-trash"></i>
                     </Button>

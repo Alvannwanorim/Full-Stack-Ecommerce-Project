@@ -12,6 +12,7 @@ import {
   orderPayAction,
 } from "../actions/orderAction";
 import { ORDER_PAY_RESET, ORDER_DELIVER_RESET } from "../constants/constants";
+import { clearCartItems } from "../actions/cartAction";
 
 const OrderScreen = ({ match, history }) => {
   const [sdkReady, setSdkReady] = useState(false);
@@ -72,6 +73,7 @@ const OrderScreen = ({ match, history }) => {
 
   const successPaymentHandler = (paymentResult) => {
     dispatch(orderPayAction(orderId, paymentResult));
+    dispatch(clearCartItems());
   };
 
   const orderDeliverHandler = () => {
@@ -136,7 +138,7 @@ const OrderScreen = ({ match, history }) => {
                       <Row>
                         <Col md={1}>
                           <Image
-                            src={item.image}
+                            src={item.image.url}
                             alt={item.name}
                             fluid
                             rounded
